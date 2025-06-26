@@ -5,7 +5,7 @@ import express from "express";
 import { register, login, home } from "../controllers/authControllers.js";
 
 // Import Verify token
-import { verifyToken } from "../controllers/authControllers.js";
+import verifyToken from "../middlewares/verifyToken.js";
 
 // Create mini-app
 const router = express.Router();
@@ -17,6 +17,6 @@ router.post("/register", register);
 router.post("/login", login);
 
 // Protected router
-router.post("/home", verifyToken, home);
+router.get("/home", verifyToken, home);
 
 export default router;
