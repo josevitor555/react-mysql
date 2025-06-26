@@ -64,7 +64,9 @@ export const login = async (req, res) => {
             return res.status(401).json({ message: 'Senha incorreta' });
         }
 
-        const token = jwt.sign({ id: rows[0].id }, process.env.JWT_KEY, { expiresIn: '3h' });
+        const token = jwt.sign({ id: rows[0].id }, process.env.JWT_KEY, { expiresIn: '1h' });
+        console.log("Generated token: ", token);
+        
         res.status(200).json({ token });
     } catch (error) {
         res.status(500).json({
@@ -73,8 +75,14 @@ export const login = async (req, res) => {
     }
 };
 
+// Logout account
+// export const logoutAccount = async (req, res) => {
+
+// }
+
 // Protected route controller
 export const home = async (req, res) => {
+    
     try {
         const [rows] = await db.query('SELECT id, username, email, created_at FROM users WHERE id = ?', [req.userId]);
         if (rows.length === 0) {
@@ -86,6 +94,6 @@ export const home = async (req, res) => {
         });
 
     } catch (error) {
-        res.status(500).json({ message: 'Internal error' });
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
