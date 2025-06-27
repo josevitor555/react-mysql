@@ -76,9 +76,29 @@ export const login = async (req, res) => {
 };
 
 // Logout account
-// export const logoutAccount = async (req, res) => {
+export const logoutAccount = async (req, res) => {
+    try {
+        const userId = req.userId;
 
-// }
+        const [result] = await db.query("DELETE FROM users WHERE id = ?", [userId]);
+        
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                message: "User not found."
+            });
+        }
+
+        res.status(200).json({
+            message: "Account deleted successfully."
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Error deleting account."
+        });
+    }
+}
 
 // Protected route controller
 export const home = async (req, res) => {
