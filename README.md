@@ -24,3 +24,4 @@ Construir um backend em Node.js com Express que permite o registro, login e aute
 - [x] GET http://localhost:3000/api/home -> /home (200 ok)
 - [x] POST http://localhost:3000/api/register -> /register (201 ok)
 - [x] POST http://localhost:3000/api/login -> /login (200 ok)
+- [x] POST http://localhost:3000/api/logoutAccount -> /logoutAccount (200 ok) 
