@@ -8,11 +8,13 @@
 // Icons from lucide react
 // import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 
-import me from "../images/me.png"
+// Import images
+import me from "../images/me.png";
 
 // Login Form Componenent
 import LoginForm from './LoginForm';
 
+// Interface
 interface LoginScreenProps {
     onSwitchToRegister: () => void;
 }
@@ -22,24 +24,8 @@ interface LoginScreenProps {
 
 const LoginScreen = ({ onSwitchToRegister }: LoginScreenProps) => {
 
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [showPassword, setShowPassword] = useState(false);
-    // const [isLoading, setIsLoading] = useState(false);
-
-    // const handleSubmit = async (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     setIsLoading(true);
-
-    //     // Simulate Login Process
-    //     setTimeout(() => {
-    //         setIsLoading(false);
-    //         alert("Welcome back!");
-    //     }, 2000);
-    // };
-
     return (
-        <div className="min-h-screen bg-[#0f0f0f] flex">
+        <div className="min-h-screen space-y-8 bg-[linear-gradient(135deg,_#0A0A0B_0%,_#1A1A1C_50%,_#2A2A2C_100%)] flex">
 
             {/* Left Column - Login Form */}
             <div className="flex-1 flex items-center justify-center p-8 lg:p-12">

@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 
 // Shadcn ui components
-import { Button } from '../components/ui/button';
+// import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 
@@ -13,6 +13,7 @@ import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 // Styled Component
 import Checkbox from './ui/checkbox';
 
+// Interface
 interface LoginFormProps {
   onSwitchToRegister: () => void;
 }
@@ -38,7 +39,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
   }
 
   return (
-    <div className='space-y-8 max-w-[620px]'>
+    <div className='space-y-8 bg-[#0A0A0B] rounded-2xl py-6 w-full max-w-[900px]'>
 
       {/* Header */}
       <div className="text-center space-y-4">
@@ -52,7 +53,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
       </div>
 
       {/* Form */}
-      <div className="bg-[#red] rounded-2xl p-8 space-y-6">
+      <div className="bg-[transparent] rounded-2xl p-8 space-y-6">
         <form onSubmit={handleSubmit} className='space-y-6'>
 
           {/* E-mail Field */}
@@ -129,6 +130,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
+
               <>
                 <span className='text-[#1A1A1C]'> Sign In </span>
                 <ArrowRight className="w-6 h-6 text-[#1A1A1C]" />
@@ -190,7 +192,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
         {/* Sign Up Link */}
         <div className="text-center">
           <p className="text-gray-400">
-            Don't have an account?{' '}
+            Don't have an account?
             <button
               onClick={onSwitchToRegister}
               className="text-white ml-2 font-medium cursor-pointer"
@@ -199,6 +201,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
             </button>
           </p>
         </div>
+
       </div>
     </div>
   );
