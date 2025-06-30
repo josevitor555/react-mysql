@@ -1,0 +1,9 @@
+'dark-primary': '#0A0A0B',
+'dark-secondary': '#1A1A1C',
+'dark-accent': '#2A2A2C',
+'glass-border': 'rgba(255, 255, 255, 0.1)',
+'glass-bg': 'rgba(255, 255, 255, 0.05)',
+
+'dark-gradient': 'linear-gradient(135deg, #0A0A0B 0%, #1A1A1C 50%, #2A2A2C 100%)',
+'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+'primary-gradient': 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',

@@ -3,15 +3,27 @@
 import './App.css'
 import './index.css'
 
-function App() {
+// React route
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Pages
+import Index from './pages/Index';
+
+const App = () => {
 
   return (
-    <>
-      <div className="app">
-        <h1 className='text-3xl font-bold underline'> React Auth With MySQL </h1>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+
+        {/* Main route */}
+        <Route path='/' element={<Index />} />
+
+        {/* Page not found */}
+        <Route path="*" element={<div> Page not found </div>} />
+        
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-export default App
+export default App;
