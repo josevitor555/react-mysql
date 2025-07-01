@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Pages
 import Index from './pages/Index';
+import Welcome from './pages/Welcome';
 
 const App = () => {
 
@@ -17,6 +18,7 @@ const App = () => {
 
         {/* Main route */}
         <Route path='/' element={<Index />} />
+        <Route path='/home' element={<Welcome />} />
 
         {/* Page not found */}
         <Route path="*" element={<div> Page not found </div>} />

@@ -17,6 +17,9 @@ import Checkbox from './ui/checkbox';
 // Axios
 import axios from 'axios';
 
+// For routes
+import { useNavigate } from 'react-router-dom';
+
 // URL da API
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -40,7 +43,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Navigation
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -63,17 +66,19 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
     // }, 2000);
 
     try {
-      const response = await axios.post(`${apiUrl}/api/register`, {
-        name: formData.fullName,
+      const response = await axios.post(`${apiUrl}/api/register`, { // http://localhost:3000/api/register
+        username: formData.fullName,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        // confirmPassword: formData.confirmPassword
       });
+      // console.log(response);
 
       localStorage.setItem("token", response.data.token);
       alert("Account created successfully!");
-
+      
       // Redirect to home
-      // navigate("/home");
+      navigate("/home");
     } catch (error) {
       console.error("Error to register user.", error);
       alert("Email or username already exists. Please try again.")

@@ -39,7 +39,7 @@ export const register = async (req, res) => {
         ]);
 
         res.status(201).json({
-            message: "User successfully registered"
+            message: "User successfully registered",
         });
 
     } catch (error) {
@@ -64,7 +64,7 @@ export const login = async (req, res) => {
             return res.status(401).json({ message: 'Senha incorreta' });
         }
 
-        const token = jwt.sign({ id: rows[0].id }, process.env.JWT_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({ id: rows[0].id }, process.env.JWT_KEY, { expiresIn: '3h' });
         console.log("Generated token: ", token);
         
         res.status(200).json({ token });

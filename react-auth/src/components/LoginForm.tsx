@@ -15,7 +15,9 @@ import axios from "axios";
 
 // Styled Component
 import Checkbox from './ui/checkbox';
-// import { useNavigate } from 'react-router-dom';
+
+// For routes
+import { useNavigate } from 'react-router-dom';
 
 // URL da API
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -34,7 +36,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Navigation
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // Handle function
   const handleSignIn = async (e: React.FormEvent) => {
@@ -46,11 +48,13 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
         email,
         password
       });
+      // console.log(response);
 
       localStorage.setItem("token", response.data.token);
       alert("Login successful!");
-      // navigate("/home");
 
+      // Redirect to home
+      navigate("/home");
     } catch (error) {
       console.error("Error to login: ", error);
       alert("Error to login. Please try again.");
