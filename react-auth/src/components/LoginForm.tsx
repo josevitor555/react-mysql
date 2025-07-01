@@ -10,8 +10,15 @@ import { Label } from '../components/ui/label';
 // Lucide Icons
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 
+// Axios
+import axios from "axios";
+
 // Styled Component
 import Checkbox from './ui/checkbox';
+// import { useNavigate } from 'react-router-dom';
+
+// URL da API
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // Interface
 interface LoginFormProps {
@@ -26,16 +33,30 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Handle function
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(false);
+  // Navigation
+  // const navigate = useNavigate();
 
-    // Simulate login process
-    setTimeout(() => {
+  // Handle function
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(`${apiUrl}/api/login`, {
+        email,
+        password
+      });
+
+      localStorage.setItem("token", response.data.token);
+      alert("Login successful!");
+      // navigate("/home");
+
+    } catch (error) {
+      console.error("Error to login: ", error);
+      alert("Error to login. Please try again.");
+    } finally {
       setIsLoading(false);
-      alert("Login successful. Redirecting to dashboard.")
-    }, 200);
+    }
   }
 
   return (
@@ -54,7 +75,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
 
       {/* Form */}
       <div className="bg-[transparent] rounded-2xl p-8 space-y-6">
-        <form onSubmit={handleSubmit} className='space-y-6'>
+        <form onSubmit={handleSignIn} className='space-y-6'>
 
           {/* E-mail Field */}
           <div className="space-y-2">
@@ -125,7 +146,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#fafafa] hover:opacity-90 text-white text-lg font-semibold py-3 cursor-pointer rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 group"
+            className="w-full bg-[#fafafa] hover:opacity-90 text-white text-lg font-semibold py-3 cursor-pointer rounded-full transition-all duration-300 flex items-center justify-center space-x-2 group"
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -152,7 +173,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
         {/* Social Login */}
         <div className="grid grid-cols-2 gap-3">
           <button
-            className="bg-[transparent] border border-gray-100 py-3 rounded-2xl text-lg text-[#fafafa] cursor-pointer flex items-center justify-center"
+            className="bg-[transparent] border border-gray-100 py-3 rounded-full text-lg text-[#fafafa] cursor-pointer flex items-center justify-center"
           >
 
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -178,7 +199,7 @@ const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
           </button>
 
           <button
-            className="bg-[#fafafa] py-3 rounded-2xl text-lg text-[#0A0A0B] cursor-pointer flex items-center justify-center"
+            className="bg-[#fafafa] py-3 rounded-full text-lg text-[#0A0A0B] cursor-pointer flex items-center justify-center"
           >
 
             <svg className="w-5 h-5 mr-2" fill="#1d1d1d" viewBox="0 0 24 24">

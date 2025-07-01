@@ -14,6 +14,12 @@ import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from 'lucide-react';
 // Styled Component
 import Checkbox from './ui/checkbox';
 
+// Axios
+import axios from 'axios';
+
+// URL da API
+const apiUrl = import.meta.env.VITE_API_URL;
+
 // Interface
 interface RegisterFormProps {
   onSwitchToLogin: () => void;
@@ -33,11 +39,14 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Navigation
+  // const navigate = useNavigate();
+
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -48,10 +57,29 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
     setIsLoading(false);
 
     // Simulate registration process
-    setTimeout(() => {
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    //   alert("Account created successfully. Please check your email to verify your account.")
+    // }, 2000);
+
+    try {
+      const response = await axios.post(`${apiUrl}/api/register`, {
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password
+      });
+
+      localStorage.setItem("token", response.data.token);
+      alert("Account created successfully!");
+
+      // Redirect to home
+      // navigate("/home");
+    } catch (error) {
+      console.error("Error to register user.", error);
+      alert("Email or username already exists. Please try again.")
+    } finally {
       setIsLoading(false);
-      alert("Account created successfully. Please check your email to verify your account.")
-    }, 2000);
+    }
   }
 
   return (
@@ -59,7 +87,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
 
       {/* Header */}
       <div className="text-center space-y-4">
-        <div className="w-16 h-16 mx-auto bg-[#fafafa] rounded-2xl flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto bg-[#fafafa] rounded-full flex items-center justify-center">
           <User className="w-8 h-8 text-black" />
         </div>
         <div>
@@ -70,7 +98,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
 
       {/* Form */}
       <div className="bg-[transparent] rounded-2xl p-8 space-y-6">
-        <form onSubmit={handleSubmit} className='space-y-6'>
+        <form onSubmit={handleSignUp} className='space-y-6'>
 
           <div className="space-y-2">
             <Label htmlFor='email' className='text-white text-lg font-medium'>
@@ -92,7 +120,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
             </div>
 
             {/* E-mail field */}
-            <Label htmlFor='email' className='text-white text-lg font-medium'>
+            <Label htmlFor='email' className='text-white mt-4 text-lg font-medium'>
               Email Address
             </Label>
             <div className="relative">
@@ -110,7 +138,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
 
             {/* Password Field */}
             <div className="space-y-2">
-              <Label htmlFor='email' className='text-white text-lg font-medium'>
+              <Label htmlFor='email' className='text-white mt-4 text-lg font-medium'>
                 Password
               </Label>
 
@@ -137,7 +165,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
 
             {/* Confirm Password Field */}
             <div className="space-y-2">
-              <Label htmlFor='email' className='text-white text-lg font-medium'>
+              <Label htmlFor='email' className='text-white mt-4 text-lg font-medium'>
                 Confirm Password
               </Label>
 
@@ -184,7 +212,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#fafafa] hover:opacity-90 text-white text-lg font-semibold py-3 cursor-pointer rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 group"
+              className="w-full bg-[#fafafa] hover:opacity-90 text-white text-lg font-semibold py-3 cursor-pointer rounded-full transition-all duration-300 flex items-center justify-center space-x-2 group"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full" />
@@ -211,7 +239,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
         {/* Social Registration */}
         <div className="grid grid-cols-2 gap-3">
           <button
-            className="bg-[transparent] border border-gray-100 py-3 rounded-2xl text-lg text-[#fafafa] cursor-pointer flex items-center justify-center"
+            className="bg-[transparent] border border-gray-100 py-3 rounded-full text-lg text-[#fafafa] cursor-pointer flex items-center justify-center"
           >
 
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -236,9 +264,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
             Google
           </button>
 
-          <button
-            className="bg-[#fafafa] py-3 rounded-2xl text-lg text-[#0A0A0B] cursor-pointer flex items-center justify-center"
-          >
+          <button className="bg-[#fafafa] py-3 rounded-full text-lg text-[#0A0A0B] cursor-pointer flex items-center justify-center">
 
             <svg className="w-5 h-5 mr-2" fill="#1d1d1d" viewBox="0 0 24 24">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />

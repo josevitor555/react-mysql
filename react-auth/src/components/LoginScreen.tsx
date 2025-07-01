@@ -40,7 +40,7 @@ const LoginScreen = ({ onSwitchToRegister }: LoginScreenProps) => {
                 <img
                     src={me}
                     alt="Me, hahaha"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover"
                 />
                 <div className="absolute bottom-8 left-30 z-20 text-white text-center">
                     <h3 className="text-2xl font-bold mb-4"> About Me </h3>
