@@ -26,3 +26,13 @@ Construir um backend em Node.js com Express que permite o registro, login e aute
 - [x] POST http://localhost:3000/api/register -> /register (201 ok)
 - [x] POST http://localhost:3000/api/login -> /login (200 ok)
 - [x] POST http://localhost:3000/api/logoutAccount -> /logoutAccount (200 ok) 
+
+---
+### Front-End Finalizado
+#### Tecnologias Utilizadas
+- [x] TypeScript para tipagem forte
+- [x] TailwidCSS (V.4)
+- [x] ShadCn ui
+- [x] Styled Component
+- [x] Reactjs (Interface)
+- [x] Axios para requisições
