@@ -4,7 +4,7 @@
 import RegisterForm from "./RegisterForm";
 
 // Import images
-import me from "../images/me.png";
+import me from "../images/Frame 3.png";
 
 interface RegisterScreenProps {
   onSwitchToLogin: () => void;
