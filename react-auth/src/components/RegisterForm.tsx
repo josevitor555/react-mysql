@@ -38,6 +38,7 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
     confirmPassword: ''
   });
 
+  // States for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,44 +46,68 @@ const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
   // Navigation
   const navigate = useNavigate();
 
+  // Handle input change
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  // Handle sign up
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       alert("Invalid Password. Please make sure your passwords match.");
       return;
     }
 
-    setIsLoading(false);
-
-    // Simulate registration process
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    //   alert("Account created successfully. Please check your email to verify your account.")
-    // }, 2000);
+    // Set loading to true
+    setIsLoading(true);
 
     try {
-      const response = await axios.post(`${apiUrl}/api/register`, { // http://localhost:3000/api/register
+
+      // Send request to register
+      const response = await axios.post(`${apiUrl}/api/register`, {
         username: formData.fullName,
         email: formData.email,
         password: formData.password,
-        // confirmPassword: formData.confirmPassword
       });
-      // console.log(response);
 
+      // Log the token
+      console.log("Received token:", response.data.token);
+
+      // Check if token is received
+      if (!response.data.token) {
+        throw new Error("No token received");
+      }
+
+      // Save token to local storage
       localStorage.setItem("token", response.data.token);
       alert("Account created successfully!");
-      
-      // Redirect to home
+
+      // Navigate to home
       navigate("/home");
+
     } catch (error) {
       console.error("Error to register user.", error);
-      alert("Email or username already exists. Please try again.")
+
+      // Check if the error is an Axios error
+      if (axios.isAxiosError(error)) {
+        console.log("Backend response:", error.response?.data);
+
+        // Alert if email or username already exists
+        if (error.response?.status === 409) {
+          alert("Email or username already exists. Please try again.");
+        } else {
+          alert("Server error. Please try again later.");
+        }
+      } else {
+        // Alert if an unexpected error occurs
+        alert("An unexpected error occurred. Please try again.");
+      }
+
     } finally {
+      // Set loading to false
       setIsLoading(false);
     }
   }

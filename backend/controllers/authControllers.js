@@ -14,14 +14,13 @@ import { db } from "../lib/db.js";
 // Import verifyToken middleware
 // import verifyToken from "../middlewares/verifyToken.js";
 
-// Register controller
 export const register = async (req, res) => {
 
-    // Body response
+    // Log the body
     console.log("BODY:", req.body);
 
-    // Req body
-    const { username, email, password } = req.body; // Destructure the request body to get name, email, and password
+    // Destructure the request body to get username, email, and password
+    const { username, email, password } = req.body;
 
     try {
         const [rows] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
@@ -31,18 +30,29 @@ export const register = async (req, res) => {
             });
         }
 
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
-        await db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [
-            username,
-            email,
-            hashedPassword,
-        ]);
 
+        // Insert user into database
+        const [result] = await db.query(
+            "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+            [username, email, hashedPassword]
+        );
+
+        // Log the result
+        console.log("INSERT result:", result);
+
+        // Generate token
+        const token = jwt.sign({ id: result.insertId }, process.env.JWT_KEY, { expiresIn: '3h' });
+
+        // Send response
         res.status(201).json({
             message: "User successfully registered",
+            token
         });
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             message: error.message
         });
@@ -66,7 +76,7 @@ export const login = async (req, res) => {
 
         const token = jwt.sign({ id: rows[0].id }, process.env.JWT_KEY, { expiresIn: '3h' });
         console.log("Generated token: ", token);
-        
+
         res.status(200).json({ token });
     } catch (error) {
         res.status(500).json({
@@ -81,7 +91,7 @@ export const logoutAccount = async (req, res) => {
         const userId = req.userId;
 
         const [result] = await db.query("DELETE FROM users WHERE id = ?", [userId]);
-        
+
         if (result.affectedRows === 0) {
             return res.status(404).json({
                 message: "User not found."
@@ -102,7 +112,7 @@ export const logoutAccount = async (req, res) => {
 
 // Protected route controller
 export const home = async (req, res) => {
-    
+
     try {
         const [rows] = await db.query('SELECT id, username, email, created_at FROM users WHERE id = ?', [req.userId]);
         if (rows.length === 0) {

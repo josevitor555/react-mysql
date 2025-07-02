@@ -21,7 +21,8 @@ const Welcome = () => {
           Authorization: `Bearer ${token}`
         });
 
-        console.log("Token pegou isso:", token);
+        // Log the token
+        console.log("Token:", token);
 
         const response = await axios.get(`${apiUrl}/api/home`, {
           headers: {
