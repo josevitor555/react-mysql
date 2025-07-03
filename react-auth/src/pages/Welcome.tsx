@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import axios from "axios";
 
 // URL da API
-const apiUrl = import.meta.env.BACKEND_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 
 const Welcome = () => {
