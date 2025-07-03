@@ -61,24 +61,34 @@ export const register = async (req, res) => {
 
 // Login controller
 export const login = async (req, res) => {
-    const { email, password } = req.body;
 
+    // Log the request
+    const { email, password } = req.body;
+    
     try {
+
+        // Check if user exists
         const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
         if (rows.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        // Check if password is correct
         const isMatch = await bcrypt.compare(password, rows[0].password);
         if (!isMatch) {
             return res.status(401).json({ message: 'Senha incorreta' });
         }
 
+        // Generate token
         const token = jwt.sign({ id: rows[0].id }, process.env.JWT_KEY, { expiresIn: '3h' });
         console.log("Generated token: ", token);
 
+        // Send response
         res.status(200).json({ token });
+
     } catch (error) {
+
+        // Log the error
         res.status(500).json({
             error: error.message
         });
@@ -88,22 +98,30 @@ export const login = async (req, res) => {
 // Logout account
 export const logoutAccount = async (req, res) => {
     try {
+
+        // Log the request
         const userId = req.userId;
 
+        // Delete user from database
         const [result] = await db.query("DELETE FROM users WHERE id = ?", [userId]);
 
+        // Log the result
         if (result.affectedRows === 0) {
             return res.status(404).json({
                 message: "User not found."
             });
         }
 
+        // Send response
         res.status(200).json({
             message: "Account deleted successfully."
         });
 
     } catch (error) {
+        // Log the error
         console.error(error);
+
+        // Send response
         res.status(500).json({
             message: "Error deleting account."
         });
